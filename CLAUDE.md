@@ -338,3 +338,15 @@ Write one TSV file per evaluation to `batch/tracker-additions/{num}-{company-slu
 - No markdown bold (`**`) in status field
 - No dates in status field (use the date column)
 - No extra text (use the notes column)
+
+---
+
+## Operational Notes (discovered in use)
+
+**Tool selection — always use the best tool for the job in the moment. Prior situational choices recorded here for reference:**
+
+- **Indeed MCP always fails** — `mcp__claude_ai_Indeed__get_job_details` consistently errors; skip it and go straight to WebFetch for all Indeed URLs
+- **First scan setup** — `data/scan-history.tsv` and `data/pipeline.md` must exist before launching the scan subagent; create them if missing (scan mode does not auto-create)
+- **Batch workers need profile context injected** — `batch/batch-prompt.md` uses AI/ML archetypes from the original system; always inject `modes/_profile.md` cybersecurity archetypes explicitly when dispatching batch Agent calls for this user
+- **Scan URL staleness** — Level 3 (WebSearch) results go stale fast; ~50% of a typical batch may be 404/expired; Level 2 (Greenhouse API) results are significantly more reliable; prefer API over WebSearch where available
+- **Perplexity for research depth** — use `perplexity_ask` for Block D comp research (synthesizes Glassdoor/Levels.fyi/Blind better than raw WebSearch), `perplexity_search` with recency filter for Block G layoff/hiring freeze signals, `perplexity_research` for `/career-ops deep` company dives and `/career-ops contacto` contact discovery; do NOT use for `site:`-filtered scan queries (WebSearch handles `site:` syntax, Perplexity does not)
